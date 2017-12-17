@@ -1,0 +1,124 @@
+body {
+  background-color: white;
+  font-family: monospace;
+}
+
+/*LEVEL*/
+
+#editor > .level ~ .level {
+  border-top: 1px solid #a0a0a0;
+}
+
+.level {
+  position: relative;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.level.sortable-chosen .content {
+  background-color: #3297fd;
+}
+
+.level.sortable-chosen .handle {
+  visibility: visible;
+}
+
+.level.root {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.level.root .content {
+  padding-right: 0px;
+}
+
+/*CONTENT*/
+
+.content {
+  min-height: 1em;
+  padding-right: 32px;
+  font-size: 16px;
+  background-color: #ffffff;
+}
+
+.content > .level ~ .level {
+  border-top: 1px solid #a0a0a0;
+}
+
+.content:focus {
+  background-color: #f6eec0;
+  outline: 0px solid transparent;
+}
+
+.content:focus .level {
+  opacity: 0.5;
+}
+
+.content:focus ~ .handle {
+  visibility: visible;
+}
+
+/*TABLE*/
+
+.row {
+  display: flex;
+  margin-right: 32px;
+  border: 1px solid black;
+}
+
+.content > .row ~ .row {
+  border-top: 0px solid black;
+}
+
+.column {
+  display: inline-block;
+  flex: 1;
+}
+
+.row > .column ~ .column {
+  box-sizing: border-box;
+  border-left: 1px solid black;
+}
+
+/*HANDLE*/
+
+.handle {
+  position: absolute;
+  cursor: pointer;
+  visibility: hidden;
+  top: 8px;
+  right: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-size: 16px;
+}
+
+/*MISC*/
+
+.inline-wrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 0.5em;
+}
+
+/*INSTRUCTIONS*/
+
+#instructions {
+  margin-top: 4px;
+}
+
+#instructions .button {
+  display: inline-block;
+  border: 1px solid #a0a0a0;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 3px;
+}
+
+#instructions .spacer {
+  display: inline-block;
+  width: 2em;
+}
