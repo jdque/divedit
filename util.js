@@ -115,38 +115,17 @@ const draw = function ($el, $target) {
 }
 
 const keystroke = function (ev) {
-  let evKey = ev.key.toLowerCase();
-
-  return {
-    handled: false,
-    is: function (keyStr) {
-      let [hasShift, hasCtrl, hasAlt] = [false, false, false];
-      let keys = keyStr.split('+');
-      for (let key of keys) {
-        key = key.toLowerCase().replace(/ /g, '');
-        if (key === 'shift') {
-          hasShift = true;
-          continue;
-        }
-        if (key === 'ctrl') {
-          hasCtrl = true;
-          continue
-        }
-        if (key === 'alt') {
-          hasAlt = true;
-          continue;
-        }
-        if (key === '') {
-          if (evKey !== 'plus') return false;
-          else continue;
-        }
-        if (key !== evKey) return false;
-      }
-      if (hasShift !== ev.shiftKey || hasCtrl !== ev.ctrlKey || hasAlt !== ev.altKey) {
-        return false;
-      }
-      this.handled = true;
-      return true;
-    }
+  let keyStr = '';
+  if (ev.ctrlKey) {
+    keyStr += 'ctrl+';
   }
+  if (ev.altKey) {
+    keyStr += 'alt+';
+  }
+  if (ev.shiftKey) {
+    keyStr += 'shift+';
+  }
+  keyStr += ev.key.toLowerCase();
+
+  return keyStr;
 }

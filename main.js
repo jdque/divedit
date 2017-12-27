@@ -98,7 +98,6 @@ class Editor extends Component {
   }
 
   onKeyDown(ev) {
-    let key = keystroke(ev);
     let $selRoot = window.getSelection().anchorNode;
     while (!$selRoot.parentNode.classList.contains('content')) {
       $selRoot = $selRoot.parentNode;
@@ -108,25 +107,30 @@ class Editor extends Component {
       return false;
     }
 
-    if (
-      key.is('tab')                && this.indent(level, $selRoot)          ||
-      key.is('shift+tab')          && this.outdent(level, $selRoot)         ||
-      key.is('shift+enter')        && this.splitHorz(level, $selRoot)       ||
-      key.is('ctrl+shift+enter')   && this.splitVert(level, $selRoot)       ||
-      key.is('backspace')          && this.erase(level, $selRoot)           ||
-      key.is('arrowup')            && this.cursorUp(level, $selRoot)        ||
-      key.is('arrowdown')          && this.cursorDown(level, $selRoot)      ||
-      key.is('ctrl+alt+arrowup')   && this.moveUp(level, $selRoot)          ||
-      key.is('ctrl+alt+arrowdown') && this.moveDown(level, $selRoot)        ||
-      key.is('ctrl+h')             && this.evalHTML(level, $selRoot, true)  ||
-      key.is('ctrl+shift+h')       && this.evalHTML(level, $selRoot, false) ||
-      key.is('ctrl+j')             && this.evalJS(level, $selRoot, true)    ||
-      key.is('ctrl+shift+j')       && this.evalJS(level, $selRoot, false)   ||
-      key.is('ctrl+shift+k')       && this.pushJS(level, $selRoot)          ||
-      key.is('ctrl+shift+o')       && this.sendJSONToJS(level, $selRoot)    ||
-      key.is('ctrl+shift+p')       && this.sendJSONToHTML(level, $selRoot)  ||
-      key.is('ctrl+shift+a')       && this.fetchURL(level, $selRoot)
-    ) {
+    let key = keystroke(ev);
+    let h = false; //handled?
+
+    switch (key) {
+      case 'tab':                h = this.indent(level, $selRoot);          break;
+      case 'shift+tab':          h = this.outdent(level, $selRoot);         break;
+      case 'shift+enter':        h = this.splitHorz(level, $selRoot);       break;
+      case 'ctrl+shift+enter':   h = this.splitVert(level, $selRoot);       break;
+      case 'backspace':          h = this.erase(level, $selRoot);           break;
+      case 'arrowup':            h = this.cursorUp(level, $selRoot);        break;
+      case 'arrowdown':          h = this.cursorDown(level, $selRoot);      break;
+      case 'ctrl+alt+arrowup':   h = this.moveUp(level, $selRoot);          break;
+      case 'ctrl+alt+arrowdown': h = this.moveDown(level, $selRoot);        break;
+      case 'ctrl+h':             h = this.evalHTML(level, $selRoot, true);  break;
+      case 'ctrl+shift+h':       h = this.evalHTML(level, $selRoot, false); break;
+      case 'ctrl+j':             h = this.evalJS(level, $selRoot, true);    break;
+      case 'ctrl+shift+j':       h = this.evalJS(level, $selRoot, false);   break;
+      case 'ctrl+shift+k':       h = this.pushJS(level, $selRoot);          break;
+      case 'ctrl+shift+o':       h = this.sendJSONToJS(level, $selRoot);    break;
+      case 'ctrl+shift+p':       h = this.sendJSONToHTML(level, $selRoot);  break;
+      case 'ctrl+shift+a':       h = this.fetchURL(level, $selRoot);        break;
+    }
+
+    if (h) {
       ev.preventDefault();
       return true;
     }
