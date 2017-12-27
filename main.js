@@ -1,55 +1,49 @@
-class App {
-  constructor(props, state) {
+class Component {
+  constructor(...propKeys) {
+    this._propKeys = propKeys || [];
+    this._state = {};
+  }
+
+  get props() {
+    let props = {};
+    for (let key of this._propKeys) {
+      props[key] = this[key];
+    }
+    return props;
+  }
+
+  get state() {
+    return this._state;
+  }
+
+  update(state) {
+    for (let key in state) {
+      this._state[key] = state[key];
+    }
+  }
+}
+
+class App extends Component {
+  constructor(props) {
+    super('instructions', 'editor');
+    
     this.instructions = props.instructions;
     this.editor = props.editor;
-
-    this._state = {};
-    this.update(this._state);
-  }
-
-  update(state) {
-    for (let key in state) {
-    }
-  }
-
-  get props() {
-    return {
-      instructions: this.instructions,
-      editor: this.editor
-    };
-  }
-
-  get state() {
-    return this._state;
   }
 }
 
-class Instructions {
-  constructor(props, state) {
+class Instructions extends Component {
+  constructor(props) {
+    super('$instructions');
+    
     this.$instructions = props.$instructions;
-
-    this._state = {};
-    this.update(this._state);
-  }
-
-  update(state) {
-    for (let key in state) {
-    }
-  }
-
-  get props() {
-    return {
-      $instructions: this.$editor
-    };
-  }
-
-  get state() {
-    return this._state;
   }
 }
 
-class Editor {
-  constructor(props, state) {
+class Editor extends Component {
+  constructor(props) {
+    super('$editor');
+    
     this.$editor = props.$editor;
     this.levelMap = {};
     this.rootLevel = this.makeRootLevel();
@@ -59,27 +53,6 @@ class Editor {
     this.$editor.appendChild(this.rootLevel.props.$level);
     this.$editor.addEventListener('keydown', (ev) => this.onKeyDown(ev));
     this.firstLevel.focusStart();
-
-    this._state = {};
-    this.update(this._state);
-  }
-
-  update(state) {
-    for (let key in state) {
-      if (prop === 'activeLevel') {
-        this._state.activeLevel = state.activeLevel;
-      }
-    }
-  }
-
-  get props() {
-    return {
-      $editor: this.$editor
-    };
-  }
-
-  get state() {
-    return this._state;
   }
 
   makeRootLevel() {
@@ -517,7 +490,7 @@ class Editor {
   }
 }
 
-class Level {
+class Level extends Component {
   static nextId() {
     if (!Level._nextId) {
       Level._nextId = 0;
@@ -525,7 +498,9 @@ class Level {
     return Level._nextId++;
   }
 
-  constructor(props, state) {
+  constructor(props) {
+    super('id', 'depth', '$level', '$content', '$handle');
+    
     this.id = Level.nextId();
     this.depth = props.depth;
     this.sortable = null;
@@ -536,26 +511,6 @@ class Level {
     this.$level.setAttribute('data-id', this.id);
     this.$content.setAttribute('data-id', this.id);
     this.$handle.setAttribute('data-id', this.id);
-
-    this._state = {};
-    this.update(this._state);
-  }
-
-  update(state) {
-  }
-
-  get props() {
-    return {
-      id: this.id,
-      depth: this.depth,
-      $level: this.$level,
-      $content: this.$content,
-      $handle: this.$handle
-    };
-  }
-
-  get state() {
-    return this._state;
   }
 
   write($el, $preceder) {
