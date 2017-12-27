@@ -1,11 +1,27 @@
 body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
   background-color: white;
   font-family: monospace;
 }
 
+/*PLAYGROUND*/
+
+#playground {
+  display: flex;
+  flex: 1;
+}
+
 /*LEVEL*/
 
-#editor > .level ~ .level {
+.editor {
+  flex: 1;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.editor > .level ~ .level {
   border-top: 1px solid #a0a0a0;
 }
 
@@ -105,16 +121,13 @@ body {
 /*INSTRUCTIONS*/
 
 #instructions {
-  margin-top: 4px;
+  padding: 8px 8px 16px 8px;
 }
 
 #instructions .button {
   display: inline-block;
   border: 1px solid #a0a0a0;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding: 4px 8px 4px 8px;
   border-radius: 3px;
 }
 

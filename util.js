@@ -129,3 +129,9 @@ const keystroke = function (ev) {
 
   return keyStr;
 }
+
+const assert = function (test) {
+  if (!test) {
+    throw new Error();
+  }
+}

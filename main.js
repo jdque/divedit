@@ -16,6 +16,16 @@ class Component {
     return this._state;
   }
 
+  queryProp(...propKeyPath) {
+    let curComponent = this;
+    for (let i = 0; i < propKeyPath.length - 1; i++) {
+      assert(curComponent instanceof Component);
+      curComponent = curComponent.props[propKeyPath[i]];
+    }
+    let lastKey = propKeyPath[propKeyPath.length - 1];
+    return curComponent.props[lastKey];
+  }
+
   update(state) {
     for (let key in state) {
       this._state[key] = state[key];
@@ -25,10 +35,10 @@ class Component {
 
 class App extends Component {
   constructor(props) {
-    super('instructions', 'editor');
+    super('instructions', 'playground');
     
     this.instructions = props.instructions;
-    this.editor = props.editor;
+    this.playground = props.playground;
   }
 }
 
@@ -40,9 +50,34 @@ class Instructions extends Component {
   }
 }
 
+class Playground extends Component {
+  constructor(props) {
+    super('$playground', 'firstEditor');
+
+    this.$playground = props.$playground;
+    this.firstEditor = this.makeEditor();
+    this.editors = [];
+
+    this.editors.push(this.firstEditor);
+    this.$playground.appendChild(this.firstEditor.props.$editor);
+  }
+
+  makeEditor() {
+    let $editor = $Editor();
+    let editor = new Editor({
+      $editor: $editor
+    });
+    return editor;
+  }
+
+  getEditor(idx) {
+    return this.editors[idx];
+  }
+}
+
 class Editor extends Component {
   constructor(props) {
-    super('$editor');
+    super('$editor', 'firstLevel');
     
     this.$editor = props.$editor;
     this.levelMap = {};
@@ -52,7 +87,6 @@ class Editor extends Component {
     this.rootLevel.write(this.firstLevel.props.$level);
     this.$editor.appendChild(this.rootLevel.props.$level);
     this.$editor.addEventListener('keydown', (ev) => this.onKeyDown(ev));
-    this.firstLevel.focusStart();
   }
 
   makeRootLevel() {
@@ -594,6 +628,10 @@ function $NewLine() {
   return $('<div><br /></div>').get(0);
 }
 
+function $Editor() {
+  return $('<div>').addClass('editor').get(0);
+}
+
 function $Level(props) {
   let $_level = $('<div>')
     .addClass('level')
@@ -638,14 +676,16 @@ function init() {
     $instructions: $('#instructions').get(0)
   });
 
-  let editor = new Editor({
-    $editor: $('#editor').get(0)
+  let playground = new Playground({
+    $playground: $('#playground').get(0)
   });
 
   let app = new App({
     instructions: instructions,
-    editor: editor
+    playground: playground
   });
+
+  app.queryProp('playground', 'firstEditor', 'firstLevel').focusStart();
 }
 
 window.onload = init;
