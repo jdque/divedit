@@ -130,7 +130,7 @@ class Editor extends Component {
       case 'ctrl+shift+a':       h = this.fetchURL(level, $selRoot);        break;
     }
 
-    if (h) {
+    if (h === true) {
       ev.preventDefault();
       return true;
     }
@@ -200,7 +200,7 @@ class Editor extends Component {
         handle: '.handle'
       });
 
-      firstCol.focusStart();
+      firstColumn.focusStart();
 
       return true;
     }
